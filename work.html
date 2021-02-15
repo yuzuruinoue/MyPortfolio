@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>matrix</title>
+  <link rel="stylesheet" href="./top.css">
+  <script type="text/javascript" src="./libs/three.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.6/dist/barba.umd.min.js" crossOrigin></script>
+  <!-- <script type="text/javascript" src="./transition.js"></script> -->
+
+</head>
+
+<body>
+  <div id="WebGL-output">
+  </div>
+  <div id="htmlbody">
+    <!-- <input type="button" value="Change" onclick="PatternChange()"/> -->
+    <!-- html -->
+    <!-- 日付から題名まで -->
+    <div class="top">
+      <p>1/20(水)</p>
+      <p class="title">Work</p>
+    </div>
+
+    <p>p.120</p>
+
+
+    <!-- 各セクション -->
+    <div class="menu">
+      <span class="num">１</span>
+      <div class="section">
+        <p>(1)</p>
+        <a href="./about.html">about</a>
+      </div>
+      <div class="section">
+        <p>(2)</p>
+        <a href="#">Work</a>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- vertexShader -->
+  <script id="vertexShader" type="x-shader/x-vertex">
+    void main(){
+      gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);
+    }
+  </script>
+
+  <!-- fragmentShader -->
+  <script id="fragmentShader" type="x-shader/x-fragment">
+    precision mediump float;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  uniform vec2 u_mouse;
+  uniform float u_count;
+
+  const float PI=3.141592;
+    void main(){
+      vec2 p=(gl_FragCoord.xy*2.0-u_resolution)/min(u_resolution.x,u_resolution.y);
+      //vec2 m=(u_mouse.xy*2.0-u_resolution.xy)/min(u_resolution.x,u_resolution.y);
+      vec2 m=vec2((u_mouse.x*2.0-u_resolution.x)/min(u_resolution.x,u_resolution.y),(-u_mouse.y*2.0+u_resolution.y)/min(u_resolution.x,u_resolution.y));
+      // vec2 p=vec2((gl_FragCoord.x*2.0-u_resolution.x)/u_resolution.x,(gl_FragCoord.y*2.0-u_resolution.y)/u_resolution.y);
+      float c=0.8;
+      float r;
+      r=abs(sin(u_time*0.5));
+      if(u_count==0.0){
+        for(float i=1.0;i<=5.0;i++){
+          // c+=0.014/length(p+vec2(cos(u_time+i*1.0/5.0*PI),sin(u_time+i*2.0/5.0*PI))*0.5);
+          // c+=0.014/length(p+vec2(cos(-u_time+i*1.0/5.0*PI+1.0/2.0*PI),sin(u_time+i*2.0/5.0*PI+1.0/2.0*PI))*0.5);
+          c+=0.002/length(p-m+vec2(cos(u_time*0.4*i*2.0/5.0*PI),sin(u_time*0.4*i*2.0/5.0*PI))*r*0.2);
+          // c+=length(p-m);
+        }
+        gl_FragColor=vec4(vec3(c),1.0);
+      }else{
+        vec3 destc=vec3(0.9,0.5,0.6);
+        vec2 offset;
+        float cc;
+        for(float i=1.0;i<10.0;i++){
+          offset.x=cos(u_time*0.5+i*2.0/9.0*PI);
+          offset.y=sin(u_time*0.5+i*2.0/9.0*PI)*0.3;
+          c+=1.0-0.02/abs(length(m-p+offset)-0.4);
+          cc+=smoothstep(0.99,0.995,0.2/c);
+        }
+        // for(float i=0.0;i<10.0;i++){
+        //
+        // }
+        gl_FragColor=vec4(vec3(cc*destc),1.0);
+      }
+      // c=0.2/length(m-p);
+    }
+  </script>
+
+
+  <!-- <script type="text/javascript" src="./threePlane.js"></script> -->
+</body>
+
+</html>

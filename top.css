@@ -1,0 +1,47 @@
+body,p,div{
+  margin: 0;
+  padding:0;
+  overflow: hidden;
+}
+
+canvas#WebGL-output {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+#htmlbody {
+  position: absolute;
+  width: 100%;
+  margin:50px;
+}
+
+.title {
+  color: #666666;
+  border-bottom:2px solid #666;
+  padding:1px;
+}
+
+.top p{
+  display:inline-block;
+}
+
+.menu{
+  padding:20px 0;
+}
+
+.num{
+  border-top:1px solid #000;
+  border-right:1px solid #000;
+  border-left:1px solid #000;
+  border-bottom:1px solid #000;
+  padding:0 3px;
+}
+
+.menu p{
+  display:inline-block;
+}
